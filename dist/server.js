@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const node_http_1 = __importDefault(require("node:http"));
 const server = node_http_1.default.createServer(async (request, response) => {
     if (request.method === "GET" && request.url === "/") {
-        return response.end("Hello World!");
+        return response.end("Docker ON");
     }
     return response.writeHead(404).end("Not found!");
 });
