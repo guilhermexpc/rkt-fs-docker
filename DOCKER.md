@@ -106,9 +106,6 @@ A flag `-f` significa “force” e força a parada e a remoção do container.
 docker rmi api:1.0
 ```
 
-<!-- Fim dos comandos básicos do Docker -->
-<!-- Documento atualizado com comandos essenciais -->
-
 Remove uma imagem local.
 
 Se a imagem estiver sendo usada ou não puder ser removida normalmente, use
@@ -131,3 +128,5 @@ docker logs api-container
 docker rm -f api-container
 docker rmi api:1.0
 ```
+
+<!-- Comentário adicionado ao final do arquivo -->
