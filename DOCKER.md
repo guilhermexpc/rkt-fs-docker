@@ -108,7 +108,6 @@ docker rmi api:1.0
 
 <!-- Fim dos comandos básicos do Docker -->
 <!-- Documento atualizado com comandos essenciais -->
-<!-- sou uma IA burra -->
 
 Remove uma imagem local.
 
