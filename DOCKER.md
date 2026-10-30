@@ -75,6 +75,12 @@ docker run -d -p 3333:3333 --name api-container api:1.0
 A flag `-d` significa “detached”. O container continua executando, mas o
 terminal fica livre. Sem `-d`, os logs permanecem ligados ao terminal atual.
 
+Para executar o container do Postgres em segundo plano:
+
+```powershell
+docker run --name meu-postgres -p 5432:5432 -d meu-postgres
+```
+
 ## Acessar o terminal do container
 
 ```powershell
