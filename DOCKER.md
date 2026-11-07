@@ -135,4 +135,115 @@ docker rm -f api-container
 docker rmi api:1.0
 ```
 
-<!-- Comentário adicionado ao final do arquivo -->
+<!-- Docker Compose -->
+
+## Docker Compose
+
+O Docker Compose permite definir vários containers, suas configurações e a
+forma como eles se relacionam em um arquivo YAML. Neste projeto, o arquivo
+usado é `docker-compose.yml`, criado na raiz do projeto, no mesmo diretório do
+`Dockerfile`.
+
+### Criar o arquivo `docker-compose.yml`
+
+Um exemplo básico para a API é:
+
+```yaml
+services:
+	api:
+		build:
+			context: .
+			dockerfile: Dockerfile
+		image: nodejs
+		container_name: api-nodejs
+		ports:
+			- "3333:3333"
+		depends_on:
+			- postgres
+```
+
+O Compose usa a propriedade `services` para agrupar os serviços que serão
+executados. Cada nome abaixo de `services` identifica um serviço. Neste
+exemplo, `api` é o serviço da aplicação.
+
+As principais propriedades usadas são:
+
+- `build`: informa que a imagem será criada a partir de um Dockerfile.
+- `context`: define o diretório enviado para o processo de build. O valor `.`
+  representa o diretório atual, a raiz do projeto.
+- `dockerfile`: informa qual arquivo será usado para criar a imagem. Neste
+  caso, é o arquivo `Dockerfile`.
+- `image`: define o nome da imagem criada ou usada pelo serviço. Aqui, a imagem
+  será chamada de `nodejs`.
+- `container_name`: define o nome do container. O container da API será chamado
+  de `api-nodejs`.
+- `ports`: publica portas no formato `porta-da-maquina:porta-do-container`.
+  Assim, a porta `3333` da máquina encaminha requisições para a porta `3333`
+  do container.
+- `depends_on`: define uma dependência entre serviços. Neste exemplo, a API
+  depende do serviço `postgres`, que será iniciado antes dela.
+
+O serviço do banco pode ser adicionado ao mesmo arquivo:
+
+```yaml
+	postgres:
+		image: postgres:alpine3.24
+		container_name: postgres
+		ports:
+			- "5432:5432"
+		environment:
+			POSTGRES_USER: postgres
+			POSTGRES_PASSWORD: postgres
+			POSTGRES_DB: api
+		volumes:
+			- database:/var/lib/postgresql/data
+
+volumes:
+	database:
+```
+
+No Compose, `image` deve conter apenas o nome da imagem, como
+`postgres:alpine3.24`. O comando `docker pull` não deve ser escrito dentro do
+valor dessa propriedade. O Compose baixa a imagem automaticamente quando
+necessário.
+
+### Validar a configuração
+
+```powershell
+docker compose config
+```
+
+`config`: Valida e exibe a configuração final do arquivo Compose.
+
+### Criar e iniciar os serviços
+
+```powershell
+docker compose up -d
+```
+
+`up`: Cria e inicia os serviços definidos no arquivo Compose.
+
+`-d`: Executa os containers em segundo plano.
+
+Para baixar explicitamente as imagens antes de iniciar os serviços, use:
+
+```powershell
+docker compose pull
+```
+
+`pull`: Baixa as imagens dos serviços definidos no arquivo Compose.
+
+### Parar e remover os serviços
+
+```powershell
+docker compose down
+```
+
+`down`: Remove os containers e a rede criada pelo Compose. As imagens e os
+volumes nomeados são mantidos.
+
+```powershell
+docker compose down -v
+```
+
+`-v`: Remove os volumes declarados no arquivo, como `database`.
